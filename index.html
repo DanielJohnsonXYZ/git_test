@@ -4,15 +4,14 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#061326" />
-  <meta name="description" content="Your Move, Prime Minister — learn how UK government works by trying to run it." />
+  <meta name="description" content="Your Move, Prime Minister — a playable simulation of running the UK government." />
   <title>Your Move, Prime Minister</title>
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="shell.css" />
-  <link rel="stylesheet" href="education-ui.css" />
-  <link rel="stylesheet" href="ux3.css" />
+  <link rel="stylesheet" href="sim.css" />
 </head>
 <body>
-  <main class="app">
+  <main class="app sim-app">
     <header class="brand" id="topBrand">
       <button class="brand-mark" id="homeBtn" aria-label="Return to title"><span class="mini-crest">♛</span><span>YOUR MOVE, PRIME MINISTER</span></button>
       <span class="beta-pill">BETA</span>
@@ -22,30 +21,27 @@
       <div class="title-stage">
         <div class="westminster-silhouette" aria-hidden="true"><span class="big-ben"></span></div>
         <div class="royal-seal"><span>♛</span></div>
-        <div class="eyebrow">A GAME OF POWER, POLICY & CONSEQUENCES</div>
+        <div class="eyebrow">RUN THE COUNTRY. LIVE WITH THE CONSEQUENCES.</div>
         <h1 class="game-title">YOUR MOVE,<br><em>PRIME MINISTER</em></h1>
         <p class="title-tagline">Think you could do better?</p>
-        <p class="title-copy">You have five years. Keep the country working, keep Parliament with you, and discover what a Prime Minister can actually control.</p>
+        <p class="title-copy">Britain keeps moving whether you act or not. Set budgets, change policy, survive crises and face the voters in five years.</p>
         <div class="title-actions"><button id="takeOfficeBtn" class="primary hero-button">Take office →</button><button id="howBtn" class="ghost-button">How it works</button></div>
       </div>
     </section>
 
     <section id="electionScreen" class="screen setup-screen">
-      <div class="setup-progress"><b>1</b><span></span><i>2</i><span></span><i>3</i></div>
       <div class="victory-panel">
         <div class="victory-icon">✓</div><div><div class="eyebrow dark">GENERAL ELECTION</div><h2>You won.</h2></div>
-        <p>The King will ask you to form a government. You have enough MPs to govern — provided they keep voting with you.</p>
-        <div class="majority-card"><small>COMMONS MAJORITY</small><span>Lose 25 MPs on a vote and your government can be defeated.</span><strong>24</strong></div>
+        <p>The King will ask you to form a government. You have a workable Commons majority — if your own MPs stay with you.</p>
+        <div class="majority-card"><small>COMMONS MAJORITY</small><span>You can usually pass laws, but rebellions still matter.</span><strong>24</strong></div>
       </div>
-      <div class="micro-lesson"><span>🏛️</span><div><b>Your first lesson</b><p>Winning an election does not give you unlimited power. Most important laws and taxes still need Parliament.</p></div></div>
       <button id="electionNextBtn" class="primary">Choose your promises →</button>
     </section>
 
     <section id="manifestoScreen" class="screen setup-screen">
-      <div class="setup-progress"><i>1</i><span class="done"></span><b>2</b><span></span><i>3</i></div>
       <div class="manifesto-card">
         <div class="section-kicker">YOUR MANDATE</div><h2>What did you promise?</h2>
-        <p>Choose three. These are the things voters will judge you on even when events drag your government elsewhere.</p>
+        <p>Choose three priorities. They shape what voters expect from you, not what events will allow you to focus on.</p>
         <div class="selection-counter"><span id="promiseCount">0</span>/3</div>
         <div class="promises" id="promiseGrid"></div>
         <div class="custom-promise"><label for="customPromise">Write your own promise <span>experimental</span></label><div><input id="customPromise" maxlength="80" placeholder="e.g. Make childcare affordable"/><button id="addPromiseBtn" type="button">Add</button></div></div>
@@ -54,98 +50,93 @@
     </section>
 
     <section id="arrivalScreen" class="screen arrival-screen">
-      <div class="setup-progress light-progress"><i>1</i><span class="done"></span><i>2</i><span class="done"></span><b>3</b></div>
       <div class="arrival-door"><div class="door-number">10</div><div class="door-slot">FIRST LORD OF THE TREASURY</div><div class="door-knob"></div></div>
-      <div class="arrival-copy"><div class="eyebrow">10 DOWNING STREET</div><h2>The country is waiting.</h2><p>Your first red box is already on the desk. Every issue will show you what happened, who really controls what, and which interests are pulling in different directions.</p><button id="openBoxBtn" class="primary red-action">Open the red box →</button></div>
+      <div class="arrival-copy"><div class="eyebrow">10 DOWNING STREET</div><h2>The country is waiting.</h2><p>Your job is no longer to answer a sequence of questions. Britain is now running in front of you.</p><button id="enterGovernmentBtn" class="primary red-action">Enter No. 10 →</button></div>
     </section>
 
-    <section id="gameScreen" class="screen game-screen-v3">
-      <div class="quiet-news"><span>LIVE</span><div id="tickerText">Markets await the government's first Budget</div></div>
-      <div class="term-strip">
-        <div><small>TERM</small><b id="turnText">Month 1 of 60</b></div>
-        <div class="term-line"><span id="termProgressBar"></span></div>
-        <div class="term-end"><small>ELECTION</small><b id="electionCountdown">59 months</b></div>
-      </div>
-      <div class="essential-status">
-        <button class="status-pill" id="pollsPill"><small>POLLS</small><b id="approvalVal">52%</b></button>
-        <button class="status-pill"><small>MAJORITY</small><b id="majorityVal">24</b></button>
-        <button class="status-pill context-only hidden" id="treasuryPill"><small>TREASURY</small><b id="treasurySide">55</b></button>
+    <section id="simScreen" class="screen sim-screen">
+      <div class="sim-news"><span>LIVE</span><div id="tickerText">Markets await the new government's first Budget</div></div>
+
+      <div class="sim-topbar">
+        <div class="time-box"><small>TERM</small><b id="monthLabel">Month 1 of 60</b><div class="term-line"><span id="termProgress"></span></div></div>
+        <div class="sim-metric"><small>POLLS</small><b id="pollsValue">52%</b></div>
+        <div class="sim-metric"><small>TREASURY</small><b id="treasuryValue">£24bn</b></div>
+        <div class="sim-metric"><small>MAJORITY</small><b id="majorityValue">24</b></div>
       </div>
 
-      <article class="case-file" id="eventCard">
-        <div class="case-top">
-          <div class="case-icon" id="eventIcon">🏥</div>
-          <div><div class="case-kicker" id="eventCategory">CRISIS</div><h1 id="eventTitle">NHS STRIKE</h1></div>
-          <div class="case-number" id="caseNumber">01</div>
+      <div class="sim-toolbar">
+        <div class="tabbar" role="tablist">
+          <button class="sim-tab active" data-tab="britain">🇬🇧 <span>Britain</span></button>
+          <button class="sim-tab" data-tab="budget">💷 <span>Budget</span></button>
+          <button class="sim-tab" data-tab="policy">📜 <span>Policy</span></button>
+          <button class="sim-tab" data-tab="government">🏛 <span>Government</span></button>
+        </div>
+        <button id="advanceBtn" class="advance-button"><span>▶</span><b>Advance month</b><small id="advanceHint">Let Britain respond</small></button>
+      </div>
+
+      <section class="sim-panel active" id="panel-britain">
+        <div class="panel-head"><div><div class="section-kicker">THE COUNTRY</div><h2>Britain at a glance</h2><p>Problems develop over time. Click an area or pressure to understand what is driving it.</p></div><button id="openNewsBtn" class="quiet-button">News</button></div>
+
+        <div class="country-layout">
+          <div class="uk-board" id="ukBoard">
+            <button class="region scotland" data-region="Scotland"><b>Scotland</b><small id="region-Scotland">Approval 49%</small><span class="region-dot amber"></span></button>
+            <button class="region north" data-region="North"><b>North</b><small id="region-North">Approval 51%</small><span class="region-dot red"></span></button>
+            <button class="region midlands" data-region="Midlands"><b>Midlands</b><small id="region-Midlands">Approval 52%</small><span class="region-dot amber"></span></button>
+            <button class="region wales" data-region="Wales"><b>Wales</b><small id="region-Wales">Approval 50%</small><span class="region-dot amber"></span></button>
+            <button class="region london" data-region="London"><b>London</b><small id="region-London">Approval 55%</small><span class="region-dot red"></span></button>
+            <button class="region south" data-region="South"><b>South</b><small id="region-South">Approval 52%</small><span class="region-dot green"></span></button>
+          </div>
+
+          <div class="national-pressures">
+            <div class="pressure-head"><b>National pressures</b><small>Click to inspect</small></div>
+            <button class="pressure-card" data-pressure="health"><span>🏥</span><div><b>NHS pressure</b><small id="healthStatus">Severe</small></div><strong id="healthScore">72</strong></button>
+            <button class="pressure-card" data-pressure="housing"><span>🏠</span><div><b>Housing</b><small id="housingStatus">Unaffordable</small></div><strong id="housingScore">68</strong></button>
+            <button class="pressure-card" data-pressure="economy"><span>📈</span><div><b>Economy</b><small id="economyStatus">Stable</small></div><strong id="economyScore">61</strong></button>
+            <button class="pressure-card" data-pressure="transport"><span>🚆</span><div><b>Transport</b><small id="transportStatus">Strained</small></div><strong id="transportScore">55</strong></button>
+          </div>
         </div>
 
-        <section class="case-stage active" id="stageSituation">
-          <div class="stage-label">THE SITUATION</div>
-          <p class="big-brief" id="eventText"></p>
-          <div class="goal-card"><small>YOUR JOB</small><p id="issueGoal">Find a response the country can live with.</p></div>
-          <button class="primary stage-next" id="situationNextBtn">Why can't I just fix it? →</button>
-        </section>
-
-        <section class="case-stage" id="stageSystem">
-          <button class="text-back" data-back="stageSituation">← Situation</button>
-          <div class="stage-label">HOW POWER ACTUALLY WORKS</div>
-          <h2>Who controls this?</h2>
-          <p id="systemExplainer"></p>
-          <div class="power-map" id="powerMap"></div>
-          <div class="control-box-v3"><small>WHAT YOU CAN ACTUALLY DO</small><p id="controlText"></p></div>
-          <button class="primary stage-next" id="systemNextBtn">Ask my advisers →</button>
-        </section>
-
-        <section class="case-stage" id="stageAdvice">
-          <button class="text-back" data-back="stageSystem">← How it works</button>
-          <div class="stage-label">CABINET ROOM</div>
-          <h2>Ask two advisers.</h2>
-          <p class="stage-intro">They are not neutral. Each one is optimising for something different.</p>
-          <div class="adviser-choices" id="adviserChoices"></div>
-          <div class="advice-counter"><b id="adviceCount">0</b>/2 consulted</div>
-          <button class="primary stage-next" id="adviceNextBtn" disabled>Make the decision →</button>
-        </section>
-
-        <section class="case-stage" id="stageDecision">
-          <button class="text-back" data-back="stageAdvice">← Advisers</button>
-          <div class="stage-label">YOUR MOVE</div>
-          <h2>What do you do?</h2>
-          <p class="stage-intro">Known costs are shown. Political and economic reactions are forecasts, not guarantees.</p>
-          <div class="choices neutral-choices" id="choices"></div>
-        </section>
-      </article>
-
-      <section class="outcome-flow hidden" id="outcomeFlow">
-        <div class="outcome-step active" id="outcomeReaction">
-          <div class="stage-label">THE REACTION</div><h2 id="feedbackTitle"></h2><p id="feedbackText"></p>
-          <div class="reaction-grid" id="groupReactions"></div>
-          <button class="primary" id="reactionNextBtn">What changed? →</button>
-        </div>
-        <div class="outcome-step" id="outcomeNumbers">
-          <div class="stage-label">WHAT CHANGED NOW</div><h2>Immediate effects</h2><div class="effects-v3" id="effects"></div>
-          <p class="uncertainty-note">These numbers describe the game state, not a claim that real political outcomes are perfectly predictable.</p>
-          <button class="primary" id="numbersNextBtn">See how the story lands →</button>
-        </div>
-        <div class="outcome-step" id="outcomeMedia">
-          <div class="stage-label">THE SAME DECISION, THREE STORIES</div>
-          <div class="media-frames" id="mediaFrames"></div>
-          <button class="primary" id="continueBtn">Next red box →</button>
+        <div class="activity-card">
+          <div><div class="section-kicker">THIS MONTH</div><h3 id="monthStoryTitle">Your government takes office</h3><p id="monthStory">The system is already moving. Your first Budget choices will shape what happens next.</p></div>
+          <div class="mini-trends" id="miniTrends"></div>
         </div>
       </section>
 
-      <details class="red-box-archive" id="archiveWrap"><summary>Red Box archive <span id="archiveCount">0 decisions</span></summary><div id="archiveList"></div></details>
+      <section class="sim-panel" id="panel-budget">
+        <div class="panel-head"><div><div class="section-kicker">HM TREASURY</div><h2>Set the Budget</h2><p>Move money between priorities. Higher spending can improve outcomes, but recurring commitments reduce fiscal room.</p></div><div class="fiscal-badge"><small>FORECAST BALANCE</small><b id="balanceValue">-£50bn</b></div></div>
+        <div class="budget-summary"><div><small>Revenue</small><b id="revenueValue">£1,100bn</b></div><div><small>Spending</small><b id="spendingValue">£1,150bn</b></div><div><small>Debt pressure</small><b id="debtValue">Medium</b></div></div>
+        <div class="budget-list" id="budgetList"></div>
+        <div class="budget-explainer" id="budgetExplainer"><b>How this works</b><p>Budget changes do not instantly change public services. Most effects arrive over several months.</p></div>
+      </section>
 
-      <div class="hidden legacy-holders">
-        <div id="economyVal"></div><div id="economyBar"></div><div id="britainVal"></div><div id="britainBar"></div><div id="powerVal"></div><div id="powerBar"></div><div id="approvalBar"></div><div id="decisionCount"></div><div id="manifestoList"></div><div id="regionMeters"></div><div id="cabinetList"></div><div id="lessonSummary"></div><div id="stakeholders"></div><div id="adviserAvatar"></div><div id="adviserName"></div><div id="adviserText"></div><div id="revealChoicesBtn"></div><div id="decisionArea"></div><div id="feedback"></div><div id="paper"></div><div id="headline"></div><div id="deck"></div><div id="voteCard"></div><div id="voteBill"></div><div id="ayeNum"></div><div id="noNum"></div><div id="voteResult"></div>
-      </div>
+      <section class="sim-panel" id="panel-policy">
+        <div class="panel-head"><div><div class="section-kicker">POLICY</div><h2>Change the rules</h2><p>These are structural levers. They change incentives and behaviour rather than buying an instant result.</p></div></div>
+        <div class="policy-grid" id="policyGrid"></div>
+      </section>
+
+      <section class="sim-panel" id="panel-government">
+        <div class="panel-head"><div><div class="section-kicker">WESTMINSTER</div><h2>Can you actually govern?</h2><p>Policies are only useful if Parliament, your party and the machinery of government can carry them through.</p></div></div>
+        <div class="gov-grid">
+          <div class="gov-card commons-card"><small>HOUSE OF COMMONS</small><h3><span id="govSeats">337</span> government MPs</h3><div class="seatbar"><span id="govSeatBar"></span></div><p>326 seats are needed for an overall majority. Your effective majority changes when MPs rebel or seats change hands.</p></div>
+          <div class="gov-card"><small>PARTY UNITY</small><b class="big-number" id="unityValue">73%</b><p id="unityText">Most MPs are still willing to follow the whip.</p></div>
+          <div class="gov-card"><small>DELIVERY CAPACITY</small><b class="big-number" id="capacityValue">58%</b><p>The civil service, councils and public bodies can only implement so much at once.</p></div>
+          <div class="gov-card"><small>YOUR MANIFESTO</small><div id="manifestoList" class="manifesto-list"></div></div>
+        </div>
+        <div class="legislation-card"><div><small>NEXT MAJOR BILL</small><h3 id="billTitle">Planning Reform Bill</h3><p id="billStatus">Not yet introduced. Liberalising planning will require Commons support.</p></div><button id="introduceBillBtn" class="quiet-button">Introduce bill</button></div>
+        <div class="decision-log"><div class="pressure-head"><b>Government record</b><small id="recordCount">0 actions</small></div><div id="recordList"></div></div>
+      </section>
     </section>
 
-    <section id="endScreen" class="screen verdict-screen"><div class="result-card end"><div class="result-ribbon">ELECTION NIGHT</div><div class="result-crest">🏛️</div><div class="muted">YOUR PREMIERSHIP</div><h2 id="endTitle"></h2><div class="grade-wrap"><span>YOUR LEGACY</span><div class="grade" id="grade"></div></div><p id="endSummary" class="end-summary"></p><div class="score-grid" id="scoreGrid"></div><div class="end-actions"><button id="shareBtn" class="primary">Share my result</button><button id="restartBtn" class="ghost-button dark-ghost">Play again</button></div></div></section>
+    <section id="endScreen" class="screen verdict-screen"><div class="result-card end"><div class="result-ribbon">ELECTION NIGHT</div><div class="result-crest">🏛️</div><div class="muted">YOUR PREMIERSHIP</div><h2 id="endTitle"></h2><div class="grade-wrap"><span>YOUR LEGACY</span><div class="grade" id="grade"></div></div><p id="endSummary" class="end-summary"></p><div class="score-grid" id="scoreGrid"></div><div class="end-actions"><button id="restartBtn" class="primary">Play again</button></div></div></section>
   </main>
 
-  <div class="modal hidden" id="howModal"><div class="modal-backdrop" id="modalBackdrop"></div><div class="modal-card"><button id="closeHowBtn" class="modal-close">×</button><div class="section-kicker">HOW IT WORKS</div><h2>Learn government by trying to run it.</h2><p>Every red box starts simple. First understand the problem. Then discover who controls what. Consult advisers with competing incentives. Finally make the call and live with the consequences.</p><button id="modalPlayBtn" class="primary">Take office →</button></div></div>
+  <div class="modal hidden" id="howModal"><div class="modal-backdrop" id="modalBackdrop"></div><div class="modal-card"><button id="closeHowBtn" class="modal-close">×</button><div class="section-kicker">HOW IT WORKS</div><h2>Britain keeps running.</h2><p>Adjust budgets and policies, then advance time. Problems improve or deteriorate gradually. Occasionally a crisis interrupts you and demands an immediate response.</p><button id="modalPlayBtn" class="primary">Take office →</button></div></div>
+
+  <div class="sim-modal hidden" id="detailModal"><div class="sim-modal-backdrop" data-close="detailModal"></div><div class="sim-modal-card"><button class="modal-close" data-close="detailModal">×</button><div id="detailContent"></div></div></div>
+  <div class="sim-modal hidden" id="crisisModal"><div class="sim-modal-backdrop"></div><div class="sim-modal-card crisis-card"><div class="crisis-alert">🚨 PRIME MINISTER</div><div id="crisisContent"></div></div></div>
+  <div class="sim-modal hidden" id="newsModal"><div class="sim-modal-backdrop" data-close="newsModal"></div><div class="sim-modal-card"><button class="modal-close" data-close="newsModal">×</button><div class="section-kicker">NEWS</div><h2>What Britain is talking about</h2><div id="newsList" class="news-list"></div></div></div>
   <div class="toast" id="toast"></div>
 
-<script src="events.js"></script><script src="events-1.js"></script><script src="events-2.js"></script><script src="events-3.js"></script><script src="events-4.js"></script><script src="events-5.js"></script><script src="education.js"></script><script src="app.js"></script><script src="shell.js"></script>
+  <script src="sim.js"></script>
 </body>
 </html>
