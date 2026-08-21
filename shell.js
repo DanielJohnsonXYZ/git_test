@@ -4,6 +4,19 @@
   const toTop=()=>window.scrollTo({top:0,behavior:'smooth'});
   const open=id=>{show('#'+id);toTop();};
 
+  // Make the visible five-year clock match the actual number of playable decisions.
+  const normalUpdateUI=updateUI;
+  updateUI=function(){
+    normalUpdateUI();
+    const totalDecisions=BASE_EVENTS.length+EXTERNAL_EVENTS.length;
+    const monthsElapsed=Math.min(60,Math.round((state.decisions/totalDecisions)*60));
+    const year=Math.min(5,Math.floor(monthsElapsed/12)+1),month=(monthsElapsed%12)+1;
+    byId('turnText').textContent=`Year ${year} • Month ${month}`;
+    const left=Math.max(0,60-monthsElapsed);
+    byId('electionCountdown').textContent=left>=24?`${Math.ceil(left/12)} years`:left>=12?'1 year':left>0?`${left} months`:'Election now';
+    byId('termProgressBar').style.width=(monthsElapsed/60*100)+'%';
+  };
+
   // Interrupt the normal domestic agenda with events the PM did not choose.
   const normalPickEvent=pickEvent;
   pickEvent=function(){
