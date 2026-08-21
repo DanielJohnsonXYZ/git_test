@@ -1,8 +1,17 @@
-// Experience shell: onboarding, explainers and sharing.
+// Experience shell: onboarding, explainers, external shocks and sharing.
 (() => {
   const byId=id=>document.getElementById(id);
   const toTop=()=>window.scrollTo({top:0,behavior:'smooth'});
   const open=id=>{show('#'+id);toTop();};
+
+  // Interrupt the normal domestic agenda with events the PM did not choose.
+  const normalPickEvent=pickEvent;
+  pickEvent=function(){
+    state.externalSeen=state.externalSeen||{};
+    if(state.eventIndex>=4&&!state.externalSeen.europe){state.externalSeen.europe=true;return EXTERNAL_EVENTS[0];}
+    if(state.eventIndex>=11&&!state.externalSeen.shipping){state.externalSeen.shipping=true;return EXTERNAL_EVENTS[1];}
+    return normalPickEvent();
+  };
 
   function resetToTitle(){state=freshState();currentEvent=null;locked=false;renderPromises();open('titleScreen');}
   function openHow(){byId('howModal').classList.remove('hidden');}
@@ -18,7 +27,7 @@
   byId('modalPlayBtn').addEventListener('click',()=>{closeHow();open('electionScreen');});
 
   byId('addPromiseBtn').addEventListener('click',()=>{
-    const input=byId('customPromise'); const value=input.value.trim();
+    const input=byId('customPromise');const value=input.value.trim();
     if(!value)return;
     if(totalPromises()>=3){toast('You already have three manifesto promises. Remove one first.');return;}
     state.customPromises.push(value);input.value='';renderPromises();
