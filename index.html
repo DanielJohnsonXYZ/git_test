@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="shell.css" />
   <link rel="stylesheet" href="sim.css" />
+  <link rel="stylesheet" href="turn-guide.css" />
 </head>
 <body>
   <main class="app sim-app">
@@ -51,7 +52,7 @@
 
     <section id="arrivalScreen" class="screen arrival-screen">
       <div class="arrival-door"><div class="door-number">10</div><div class="door-slot">FIRST LORD OF THE TREASURY</div><div class="door-knob"></div></div>
-      <div class="arrival-copy"><div class="eyebrow">10 DOWNING STREET</div><h2>The country is waiting.</h2><p>Your job is no longer to answer a sequence of questions. Britain is now running in front of you.</p><button id="enterGovernmentBtn" class="primary red-action">Enter No. 10 →</button></div>
+      <div class="arrival-copy"><div class="eyebrow">10 DOWNING STREET</div><h2>The country is waiting.</h2><p>You are about to start Month 1. Each month you can inspect Britain, change government spending or policy, then end the month to see what happens.</p><button id="enterGovernmentBtn" class="primary red-action">Start Month 1 →</button></div>
     </section>
 
     <section id="simScreen" class="screen sim-screen">
@@ -64,18 +65,32 @@
         <div class="sim-metric"><small>MAJORITY</small><b id="majorityValue">24</b></div>
       </div>
 
+      <section class="turn-guide" id="turnGuide">
+        <div class="turn-guide-copy">
+          <div class="turn-state"><span class="turn-live-dot"></span><b id="turnPhase">YOUR TURN</b></div>
+          <h2 id="turnInstruction">Decide whether government should change anything this month.</h2>
+          <p id="turnDetail">You are actively playing Month 1. Britain will not move forward until you press <b>End month</b>. You can make several changes, one change, or none.</p>
+        </div>
+        <div class="turn-steps">
+          <button class="turn-step active" data-guide-tab="britain"><span>1</span><div><b>Check Britain</b><small>See what needs attention</small></div></button>
+          <button class="turn-step" data-guide-tab="budget"><span>2</span><div><b>Act if needed</b><small>Change spending or policy</small></div></button>
+          <button class="turn-step end-step" id="guideEndMonth"><span>3</span><div><b>End the month</b><small>Run the simulation</small></div></button>
+        </div>
+        <div class="pending-banner" id="pendingBanner"><span>●</span><b id="pendingText">No government changes made this month.</b></div>
+      </section>
+
       <div class="sim-toolbar">
         <div class="tabbar" role="tablist">
           <button class="sim-tab active" data-tab="britain">🇬🇧 <span>Britain</span></button>
-          <button class="sim-tab" data-tab="budget">💷 <span>Budget</span></button>
-          <button class="sim-tab" data-tab="policy">📜 <span>Policy</span></button>
-          <button class="sim-tab" data-tab="government">🏛 <span>Government</span></button>
+          <button class="sim-tab" data-tab="budget">💷 <span>Spending</span></button>
+          <button class="sim-tab" data-tab="policy">📜 <span>Policy levers</span></button>
+          <button class="sim-tab" data-tab="government">🏛 <span>Parliament</span></button>
         </div>
-        <button id="advanceBtn" class="advance-button"><span>▶</span><b>Advance month</b><small id="advanceHint">Let Britain respond</small></button>
+        <button id="advanceBtn" class="advance-button"><span>▶</span><b>End month</b><small id="advanceHint">Run Britain & see consequences</small></button>
       </div>
 
       <section class="sim-panel active" id="panel-britain">
-        <div class="panel-head"><div><div class="section-kicker">THE COUNTRY</div><h2>Britain at a glance</h2><p>Problems develop over time. Click an area or pressure to understand what is driving it.</p></div><button id="openNewsBtn" class="quiet-button">News</button></div>
+        <div class="panel-head"><div><div class="section-kicker">STEP 1 · CHECK THE COUNTRY</div><h2>Britain at a glance</h2><p>Start here. Red and amber areas are pressures you may want to respond to. You do not need to fix everything in one month.</p></div><button id="openNewsBtn" class="quiet-button">News</button></div>
 
         <div class="country-layout">
           <div class="uk-board" id="ukBoard">
@@ -88,7 +103,7 @@
           </div>
 
           <div class="national-pressures">
-            <div class="pressure-head"><b>National pressures</b><small>Click to inspect</small></div>
+            <div class="pressure-head"><b>National pressures</b><small>Click to understand</small></div>
             <button class="pressure-card" data-pressure="health"><span>🏥</span><div><b>NHS pressure</b><small id="healthStatus">Severe</small></div><strong id="healthScore">72</strong></button>
             <button class="pressure-card" data-pressure="housing"><span>🏠</span><div><b>Housing</b><small id="housingStatus">Unaffordable</small></div><strong id="housingScore">68</strong></button>
             <button class="pressure-card" data-pressure="economy"><span>📈</span><div><b>Economy</b><small id="economyStatus">Stable</small></div><strong id="economyScore">61</strong></button>
@@ -97,32 +112,32 @@
         </div>
 
         <div class="activity-card">
-          <div><div class="section-kicker">THIS MONTH</div><h3 id="monthStoryTitle">Your government takes office</h3><p id="monthStory">The system is already moving. Your first Budget choices will shape what happens next.</p></div>
+          <div><div class="section-kicker">WHAT HAPPENED LAST MONTH</div><h3 id="monthStoryTitle">Your government takes office</h3><p id="monthStory">Nothing has happened yet. Inspect the country, make any changes you want, then end Month 1.</p></div>
           <div class="mini-trends" id="miniTrends"></div>
         </div>
       </section>
 
       <section class="sim-panel" id="panel-budget">
-        <div class="panel-head"><div><div class="section-kicker">HM TREASURY</div><h2>Set the Budget</h2><p>Move money between priorities. Higher spending can improve outcomes, but recurring commitments reduce fiscal room.</p></div><div class="fiscal-badge"><small>FORECAST BALANCE</small><b id="balanceValue">-£50bn</b></div></div>
+        <div class="panel-head"><div><div class="section-kicker">STEP 2 · GOVERNMENT SPENDING</div><h2>Change what government spends</h2><p>These are <b>government decisions</b>, not game settings. Increase or cut departmental budgets, then end the month to let effects begin working through the country.</p></div><div class="fiscal-badge"><small>FORECAST BALANCE</small><b id="balanceValue">-£50bn</b></div></div>
         <div class="budget-summary"><div><small>Revenue</small><b id="revenueValue">£1,100bn</b></div><div><small>Spending</small><b id="spendingValue">£1,150bn</b></div><div><small>Debt pressure</small><b id="debtValue">Medium</b></div></div>
         <div class="budget-list" id="budgetList"></div>
-        <div class="budget-explainer" id="budgetExplainer"><b>How this works</b><p>Budget changes do not instantly change public services. Most effects arrive over several months.</p></div>
+        <div class="budget-explainer" id="budgetExplainer"><b>What happens when I change this?</b><p>Your new spending level becomes government policy immediately, but NHS, schools, transport and housing usually take months to respond.</p></div>
       </section>
 
       <section class="sim-panel" id="panel-policy">
-        <div class="panel-head"><div><div class="section-kicker">POLICY</div><h2>Change the rules</h2><p>These are structural levers. They change incentives and behaviour rather than buying an instant result.</p></div></div>
+        <div class="panel-head"><div><div class="section-kicker">STEP 2 · GOVERNMENT POLICY LEVERS</div><h2>Change the rules</h2><p>These are also <b>government decisions</b>, not game preferences. They change taxes, regulation and incentives. Their effects emerge over time.</p></div></div>
         <div class="policy-grid" id="policyGrid"></div>
       </section>
 
       <section class="sim-panel" id="panel-government">
-        <div class="panel-head"><div><div class="section-kicker">WESTMINSTER</div><h2>Can you actually govern?</h2><p>Policies are only useful if Parliament, your party and the machinery of government can carry them through.</p></div></div>
+        <div class="panel-head"><div><div class="section-kicker">PARLIAMENT & DELIVERY</div><h2>Can your government actually do it?</h2><p>This is not a settings screen. It shows the political constraints on your plans: MPs, party unity and the state's ability to deliver.</p></div></div>
         <div class="gov-grid">
           <div class="gov-card commons-card"><small>HOUSE OF COMMONS</small><h3><span id="govSeats">337</span> government MPs</h3><div class="seatbar"><span id="govSeatBar"></span></div><p>326 seats are needed for an overall majority. Your effective majority changes when MPs rebel or seats change hands.</p></div>
           <div class="gov-card"><small>PARTY UNITY</small><b class="big-number" id="unityValue">73%</b><p id="unityText">Most MPs are still willing to follow the whip.</p></div>
           <div class="gov-card"><small>DELIVERY CAPACITY</small><b class="big-number" id="capacityValue">58%</b><p>The civil service, councils and public bodies can only implement so much at once.</p></div>
           <div class="gov-card"><small>YOUR MANIFESTO</small><div id="manifestoList" class="manifesto-list"></div></div>
         </div>
-        <div class="legislation-card"><div><small>NEXT MAJOR BILL</small><h3 id="billTitle">Planning Reform Bill</h3><p id="billStatus">Not yet introduced. Liberalising planning will require Commons support.</p></div><button id="introduceBillBtn" class="quiet-button">Introduce bill</button></div>
+        <div class="legislation-card"><div><small>OPTIONAL ACTION</small><h3 id="billTitle">Planning Reform Bill</h3><p id="billStatus">Not yet introduced. Liberalising planning will require Commons support.</p></div><button id="introduceBillBtn" class="quiet-button">Introduce bill</button></div>
         <div class="decision-log"><div class="pressure-head"><b>Government record</b><small id="recordCount">0 actions</small></div><div id="recordList"></div></div>
       </section>
     </section>
@@ -130,7 +145,7 @@
     <section id="endScreen" class="screen verdict-screen"><div class="result-card end"><div class="result-ribbon">ELECTION NIGHT</div><div class="result-crest">🏛️</div><div class="muted">YOUR PREMIERSHIP</div><h2 id="endTitle"></h2><div class="grade-wrap"><span>YOUR LEGACY</span><div class="grade" id="grade"></div></div><p id="endSummary" class="end-summary"></p><div class="score-grid" id="scoreGrid"></div><div class="end-actions"><button id="restartBtn" class="primary">Play again</button></div></div></section>
   </main>
 
-  <div class="modal hidden" id="howModal"><div class="modal-backdrop" id="modalBackdrop"></div><div class="modal-card"><button id="closeHowBtn" class="modal-close">×</button><div class="section-kicker">HOW IT WORKS</div><h2>Britain keeps running.</h2><p>Adjust budgets and policies, then advance time. Problems improve or deteriorate gradually. Occasionally a crisis interrupts you and demands an immediate response.</p><button id="modalPlayBtn" class="primary">Take office →</button></div></div>
+  <div class="modal hidden" id="howModal"><div class="modal-backdrop" id="modalBackdrop"></div><div class="modal-card"><button id="closeHowBtn" class="modal-close">×</button><div class="section-kicker">THE MONTHLY LOOP</div><h2>Every month has three simple steps.</h2><div class="how-turns"><p><b>1 · Check Britain.</b> See what is going well and what is under pressure.</p><p><b>2 · Act if you want.</b> Change spending, policy or try to pass legislation. You can also do nothing.</p><p><b>3 · End the month.</b> Time moves forward and the simulation shows you the consequences. Crises sometimes interrupt.</p></div><button id="modalPlayBtn" class="primary">Take office →</button></div></div>
 
   <div class="sim-modal hidden" id="detailModal"><div class="sim-modal-backdrop" data-close="detailModal"></div><div class="sim-modal-card"><button class="modal-close" data-close="detailModal">×</button><div id="detailContent"></div></div></div>
   <div class="sim-modal hidden" id="crisisModal"><div class="sim-modal-backdrop"></div><div class="sim-modal-card crisis-card"><div class="crisis-alert">🚨 PRIME MINISTER</div><div id="crisisContent"></div></div></div>
@@ -138,5 +153,6 @@
   <div class="toast" id="toast"></div>
 
   <script src="sim.js"></script>
+  <script src="turn-guide.js"></script>
 </body>
 </html>
