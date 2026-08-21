@@ -1,84 +1,47 @@
-// Experience shell for title, onboarding, arrival and sharing.
+// Experience shell: onboarding, explainers and sharing.
 (() => {
-  const byId = id => document.getElementById(id);
-  const hiddenSave = document.createElement('span');
-  hiddenSave.id = 'saveStatus';
-  hiddenSave.className = 'hidden';
-  document.body.appendChild(hiddenSave);
+  const byId=id=>document.getElementById(id);
+  const toTop=()=>window.scrollTo({top:0,behavior:'smooth'});
+  const open=id=>{show('#'+id);toTop();};
 
-  const originalRenderPromises = window.renderPromises;
-  window.renderPromises = function(){
-    originalRenderPromises();
-    const counter = byId('promiseCount');
-    if(counter) counter.textContent = state.promises.length;
-  };
-  renderPromises();
+  function resetToTitle(){state=freshState();currentEvent=null;locked=false;renderPromises();open('titleScreen');}
+  function openHow(){byId('howModal').classList.remove('hidden');}
+  function closeHow(){byId('howModal').classList.add('hidden');}
+  function openStats(){byId('statsModal').classList.remove('hidden');}
+  function closeStats(){byId('statsModal').classList.add('hidden');}
 
-  function toTop(){ window.scrollTo({top:0,behavior:'smooth'}); }
-  function resetToTitle(){
-    state = freshState();
-    currentEvent = null;
-    locked = false;
-    renderPromises();
-    byId('bottomNav').classList.add('hidden');
-    document.querySelectorAll('.navbtn').forEach((b,i)=>b.classList.toggle('active',i===0));
-    show('#titleScreen');
-    toTop();
-  }
-  function openHow(){ byId('howModal').classList.remove('hidden'); }
-  function closeHow(){ byId('howModal').classList.add('hidden'); }
-  function goToManifesto(){ closeHow(); show('#manifestoScreen'); toTop(); }
+  byId('takeOfficeBtn').addEventListener('click',()=>open('electionScreen'));
+  byId('electionNextBtn').addEventListener('click',()=>open('manifestoScreen'));
+  byId('howBtn').addEventListener('click',openHow);
+  byId('closeHowBtn').addEventListener('click',closeHow);
+  byId('modalBackdrop').addEventListener('click',closeHow);
+  byId('modalPlayBtn').addEventListener('click',()=>{closeHow();open('electionScreen');});
 
-  byId('takeOfficeBtn').addEventListener('click', goToManifesto);
-  byId('howBtn').addEventListener('click', openHow);
-  byId('closeHowBtn').addEventListener('click', closeHow);
-  byId('modalBackdrop').addEventListener('click', closeHow);
-  byId('modalPlayBtn').addEventListener('click', goToManifesto);
+  byId('addPromiseBtn').addEventListener('click',()=>{
+    const input=byId('customPromise'); const value=input.value.trim();
+    if(!value)return;
+    if(totalPromises()>=3){toast('You already have three manifesto promises. Remove one first.');return;}
+    state.customPromises.push(value);input.value='';renderPromises();
+  });
+  byId('customPromise').addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();byId('addPromiseBtn').click();}});
 
-  byId('startBtn').addEventListener('click', (event) => {
-    if(state.promises.length !== 3) return;
-    event.preventDefault();
-    event.stopImmediatePropagation();
-    show('#arrivalScreen');
-    byId('bottomNav').classList.add('hidden');
-    toTop();
-  }, true);
+  byId('startBtn').addEventListener('click',()=>{if(totalPromises()===3)open('powersScreen');});
+  byId('powersNextBtn').addEventListener('click',()=>open('arrivalScreen'));
+  byId('openBoxBtn').addEventListener('click',()=>{state.turn=0;open('gameScreen');loadEvent();setTimeout(()=>toast('First lesson: read the system before making the decision.'),400);});
+  byId('revealChoicesBtn').addEventListener('click',revealChoices);
+  byId('continueBtn').addEventListener('click',continueGame);
+  byId('restartBtn').addEventListener('click',resetToTitle);
+  byId('homeBtn').addEventListener('click',resetToTitle);
 
-  byId('openBoxBtn').addEventListener('click', () => {
-    show('#gameScreen');
-    byId('bottomNav').classList.remove('hidden');
-    state.turn = 0;
-    loadEvent();
-    toTop();
-    setTimeout(()=>toast('Welcome to No. 10. Every choice has a cost.'),350);
+  byId('statsHelpBtn').addEventListener('click',openStats);
+  byId('closeStatsBtn').addEventListener('click',closeStats);
+  byId('statsBackdrop').addEventListener('click',closeStats);
+
+  byId('shareBtn').addEventListener('click',async()=>{
+    const grade=byId('grade').textContent,title=byId('endTitle').textContent;
+    const text=`I got a ${grade} running Britain in Your Move, Prime Minister. ${title} Think you could do better?`;
+    try{if(navigator.share)await navigator.share({title:'Your Move, Prime Minister',text,url:location.href});else if(navigator.clipboard){await navigator.clipboard.writeText(`${text} ${location.href}`);toast('Result copied to clipboard.');}}catch(_){}
   });
 
-  byId('restartBtn').addEventListener('click', (event) => {
-    event.preventDefault();
-    event.stopImmediatePropagation();
-    resetToTitle();
-  }, true);
-
-  byId('homeBtn').addEventListener('click', resetToTitle);
-
-  byId('shareBtn').addEventListener('click', async () => {
-    const grade = byId('grade').textContent;
-    const title = byId('endTitle').textContent;
-    const text = `I got a ${grade} running Britain in Your Move, Prime Minister. ${title} Think you could do better?`;
-    const shareData = {title:'Your Move, Prime Minister',text,url:location.href};
-    try {
-      if(navigator.share){
-        await navigator.share(shareData);
-      } else if(navigator.clipboard){
-        await navigator.clipboard.writeText(`${text} ${location.href}`);
-        toast('Result copied. Send it to someone who thinks they could do better.');
-      } else {
-        toast('Your result: '+text);
-      }
-    } catch (_) {}
-  });
-
-  document.addEventListener('keydown', (event) => {
-    if(event.key === 'Escape') closeHow();
-  });
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeHow();closeStats();}});
 })();
