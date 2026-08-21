@@ -4,21 +4,15 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
   <meta name="theme-color" content="#061326" />
-  <meta name="description" content="Your Move, Prime Minister, a fast political strategy game about running Britain." />
+  <meta name="description" content="Your Move, Prime Minister, a political strategy game about learning to run Britain." />
   <title>Your Move, Prime Minister</title>
   <link rel="stylesheet" href="styles.css" />
   <link rel="stylesheet" href="shell.css" />
 </head>
 <body>
-  <div class="page-glow page-glow-one"></div>
-  <div class="page-glow page-glow-two"></div>
-
   <main class="app">
     <header class="brand" id="topBrand">
-      <button class="brand-mark" id="homeBtn" aria-label="Return to title screen">
-        <span class="mini-crest">♛</span>
-        <span>YOUR MOVE, PRIME MINISTER</span>
-      </button>
+      <button class="brand-mark" id="homeBtn" aria-label="Return to title"><span class="mini-crest">♛</span><span>YOUR MOVE, PRIME MINISTER</span></button>
       <span class="beta-pill">BETA</span>
     </header>
 
@@ -29,66 +23,104 @@
         <div class="eyebrow">A GAME OF POWER, POLICY & CONSEQUENCES</div>
         <h1 class="game-title">YOUR MOVE,<br><em>PRIME MINISTER</em></h1>
         <p class="title-tagline">Think you could do better?</p>
-        <p class="title-copy">Britain is yours. Fix the NHS, grow the economy, keep your MPs in line and somehow win the next election.</p>
-        <div class="title-actions">
-          <button id="takeOfficeBtn" class="primary hero-button">Take office <span>→</span></button>
-          <button id="howBtn" class="ghost-button">How the game works</button>
-        </div>
-        <div class="feature-strip"><span>⏱ 15–25 min</span><span>📱 Mobile first</span><span>🏛 Real UK institutions</span></div>
-        <div class="red-box-prop" aria-hidden="true"><div class="red-box-handle"></div><div class="red-box-face"><span class="box-crown">♛</span><b>PRIME MINISTER</b><small>OFFICIAL</small></div></div>
+        <p class="title-copy">Take charge of Britain. You will learn what a Prime Minister can actually control, who can stop you, and why every easy answer creates another problem.</p>
+        <div class="title-actions"><button id="takeOfficeBtn" class="primary hero-button">Take office →</button><button id="howBtn" class="ghost-button">How the game works</button></div>
+        <div class="feature-strip"><span>⏱ 15–25 min</span><span>🎓 Learn by playing</span><span>🏛 Real UK institutions</span></div>
       </div>
     </section>
 
-    <section id="manifestoScreen" class="screen setup-screen">
-      <div class="setup-topline"><span>GENERAL ELECTION</span><span class="live-dot">● RESULT</span></div>
+    <section id="electionScreen" class="screen setup-screen">
+      <div class="setup-progress"><b>1</b><span></span><i>2</i><span></span><i>3</i><span></span><i>4</i></div>
       <div class="victory-panel">
-        <div class="victory-icon">✓</div>
-        <div><div class="eyebrow dark">YOU HAVE BEEN ASKED TO FORM A GOVERNMENT</div><h2>You won.</h2><p>Not by much. You enter Downing Street with a working majority and five years before the country judges you again.</p></div>
-        <div class="majority-card"><small>COMMONS MAJORITY</small><strong>+24</strong><span>Enough to govern. Not enough to relax.</span></div>
+        <div class="victory-icon">✓</div><div><div class="eyebrow dark">GENERAL ELECTION RESULT</div><h2>You won.</h2></div>
+        <p>The King will ask you to form a government. Your party has a working majority in the House of Commons.</p>
+        <div class="majority-card"><small>YOUR COMMONS MAJORITY</small><span>More than half the seats means you can usually pass laws, if your own MPs stay loyal.</span><strong>24</strong></div>
       </div>
+      <div class="lesson-card"><div class="lesson-icon">🏛️</div><div><b>What does a majority actually do?</b><p>Most important laws and taxes need Parliament. A majority gives you votes in the Commons, but rebellions, the Lords, courts and implementation can still get in your way.</p></div></div>
+      <button id="electionNextBtn" class="primary">Form your government →</button>
+    </section>
+
+    <section id="manifestoScreen" class="screen setup-screen">
+      <div class="setup-progress"><i>1</i><span class="done"></span><b>2</b><span></span><i>3</i><span></span><i>4</i></div>
       <div class="manifesto-card">
-        <div class="section-kicker">YOUR MANDATE</div>
-        <h2>Choose three promises.</h2>
-        <p>The public will remember these. Breaking them will hurt more than breaking promises you never made.</p>
-        <div class="selection-counter"><span id="promiseCount">0</span> / 3 selected</div>
+        <div class="section-kicker">YOUR MANDATE</div><h2>What did you promise Britain?</h2>
+        <p>Choose three priorities. Voters will remember them, even when crises drag you somewhere else.</p>
+        <div class="selection-counter"><span id="promiseCount">0</span>/3 selected</div>
         <div class="promises" id="promiseGrid"></div>
+        <div class="custom-promise"><label for="customPromise">Or write one of your own <span>experimental</span></label><div><input id="customPromise" maxlength="80" placeholder="e.g. Make childcare affordable"/><button id="addPromiseBtn" type="button">Add</button></div><small>For now this becomes a manifesto pledge. A later AI version can turn custom promises into bespoke events and policy trade-offs.</small></div>
         <button id="startBtn" class="primary" disabled>Choose 3 promises</button>
       </div>
     </section>
 
+    <section id="powersScreen" class="screen setup-screen">
+      <div class="setup-progress"><i>1</i><span class="done"></span><i>2</i><span class="done"></span><b>3</b><span></span><i>4</i></div>
+      <div class="manifesto-card powers-card">
+        <div class="section-kicker">BEFORE YOU START</div><h2>You are powerful. You are not all-powerful.</h2>
+        <p>The game will keep showing you the difference between what government <b>controls</b>, what it can only <b>influence</b>, and what other institutions decide.</p>
+        <div class="power-lessons">
+          <div><span>✅</span><b>You can</b><p>Set government priorities, propose laws, change many taxes, allocate spending and appoint ministers.</p></div>
+          <div><span>↔️</span><b>You can influence</b><p>The economy, NHS performance, housebuilding, wages, investment and public behaviour.</p></div>
+          <div><span>⛔</span><b>You cannot simply order</b><p>Interest-rate cuts, court verdicts, council planning approvals, House of Lords votes or foreign governments.</p></div>
+        </div>
+        <button id="powersNextBtn" class="primary">I understand →</button>
+      </div>
+    </section>
+
     <section id="arrivalScreen" class="screen arrival-screen">
-      <div class="arrival-door" aria-hidden="true"><div class="door-number">10</div><div class="door-slot">FIRST LORD OF THE TREASURY</div><div class="door-knob"></div></div>
-      <div class="arrival-copy"><div class="eyebrow">DOWNING STREET • DAY ONE</div><h2>The country is waiting.</h2><p>Your Cabinet has been sworn in. The press is outside. The first red box is already on your desk.</p><button id="openBoxBtn" class="primary red-action">Open the red box <span>→</span></button></div>
+      <div class="setup-progress light-progress"><i>1</i><span class="done"></span><i>2</i><span class="done"></span><i>3</i><span class="done"></span><b>4</b></div>
+      <div class="arrival-door"><div class="door-number">10</div><div class="door-slot">FIRST LORD OF THE TREASURY</div><div class="door-knob"></div></div>
+      <div class="arrival-copy"><div class="eyebrow">10 DOWNING STREET</div><h2>The country is waiting.</h2><p>Your Cabinet is assembled. The civil service has filled your first red box. You will get a briefing before anyone asks you to decide.</p><button id="openBoxBtn" class="primary red-action">Open your first briefing →</button></div>
     </section>
 
     <section id="gameScreen" class="screen">
-      <div class="game-header"><div><div class="game-location">10 DOWNING STREET</div><div class="game-date" id="turnText">Year 1 • Month 1</div></div><div class="majority-chip">Majority <b id="majorityVal">24</b></div></div>
-      <div class="stats">
-        <div class="stat approval"><div class="label">👍 Approval</div><div class="value" id="approvalVal">52%</div><div class="bar"><span id="approvalBar"></span></div></div>
+      <div class="news-ticker"><b>LIVE</b><div id="tickerText">WORLD • Markets await the new government's first Budget</div></div>
+      <div class="game-header"><div><div class="game-location">10 DOWNING STREET</div><div class="game-date" id="turnText">Year 1 • Month 1</div></div><div class="election-clock"><small>NEXT ELECTION</small><b id="electionCountdown">5 years</b></div></div>
+      <div class="term-progress"><span id="termProgressBar"></span></div>
+
+      <div class="stats compact-stats">
+        <div class="stat approval"><div class="label">👍 Public</div><div class="value" id="approvalVal">52%</div><div class="bar"><span id="approvalBar"></span></div></div>
         <div class="stat economy"><div class="label">📈 Economy</div><div class="value" id="economyVal">61</div><div class="bar"><span id="economyBar"></span></div></div>
-        <div class="stat britain"><div class="label">❤️ Britain</div><div class="value" id="britainVal">48</div><div class="bar"><span id="britainBar"></span></div></div>
-        <div class="stat power"><div class="label">♛ Power</div><div class="value" id="powerVal">73</div><div class="bar"><span id="powerBar"></span></div></div>
+        <div class="stat britain"><div class="label">❤️ Services</div><div class="value" id="britainVal">48</div><div class="bar"><span id="britainBar"></span></div></div>
+        <div class="stat power"><div class="label">🏛 Authority</div><div class="value" id="powerVal">73</div><div class="bar"><span id="powerBar"></span></div></div>
       </div>
-      <div class="game-layout">
+      <button class="what-stats" id="statsHelpBtn">What do these mean?</button>
+
+      <div class="game-layout educational-layout">
         <div>
-          <div class="red-box-tab"><span>THE RED BOX</span><small>Decision required</small></div>
-          <article class="event-card" id="eventCard"><div class="event-art" id="eventArt"><div class="event-icon" id="eventIcon">🏥</div><div class="event-label"><div class="kicker" id="eventCategory">Urgent</div><h2 id="eventTitle">NHS STRIKE</h2></div></div><div class="event-body"><p id="eventText"></p><div class="adviser"><div class="avatar" id="adviserAvatar">£</div><div><span class="adviser-label">ADVICE FROM</span><br><b id="adviserName">The Chancellor</b><br><span id="adviserText"></span></div></div><div class="decision-label">YOUR MOVE</div><div class="choices" id="choices"></div></div></article>
-          <div class="feedback" id="feedback"><div class="feedback-kicker">DECISION TAKEN</div><b id="feedbackTitle">Decision made.</b><div id="feedbackText" class="feedback-copy"></div><div class="effects" id="effects"></div><button id="continueBtn" class="primary">Next briefing →</button></div>
-          <div class="paper" id="paper"><div class="paper-top"><span>THE DAILY HERALD</span><span>WESTMINSTER EDITION</span></div><div class="breaking">BREAKING</div><div class="headline" id="headline">PM CAVES TO DOCTORS</div><div class="deck" id="deck">Government forced into costly settlement.</div><div class="paper-rule"></div><small>Politics • Opinion • What this means for No. 10</small></div>
-          <div class="vote-card" id="voteCard"><div class="vote-top"><span>HOUSE OF COMMONS</span><span class="live-dot">● LIVE</span></div><div class="vote-title">DIVISION</div><h3 id="voteBill">Planning Reform Bill</h3><div class="votes"><div><div class="muted">AYE</div><div class="vote-num aye" id="ayeNum">318</div></div><div class="commons-mark">🏛</div><div style="text-align:right"><div class="muted">NO</div><div class="vote-num no" id="noNum">317</div></div></div><div class="passes" id="voteResult">BILL PASSES</div></div>
+          <div class="red-box-tab"><span>THE RED BOX</span><small id="eventCategory">URGENT</small></div>
+          <article class="event-card briefing-card" id="eventCard">
+            <div class="event-art" id="eventArt"><div class="event-icon" id="eventIcon">🏥</div><div class="event-label"><div class="kicker">TODAY'S BRIEFING</div><h2 id="eventTitle">NHS STRIKE</h2></div></div>
+            <div class="event-body">
+              <div class="briefing-step"><span>1</span><div><b>What has happened?</b><p id="eventText"></p></div></div>
+              <div class="briefing-step system-step"><span>2</span><div><b>How does this actually work?</b><p id="systemExplainer"></p><div class="control-box"><small>YOUR POWER</small><p id="controlText"></p></div></div></div>
+              <div class="briefing-step"><span>3</span><div><b>Who wants what?</b><div class="stakeholder-grid" id="stakeholders"></div></div></div>
+              <div class="adviser"><div class="avatar" id="adviserAvatar">£</div><div><div class="adviser-label">YOUR ADVISER SAYS</div><b id="adviserName">The Chancellor</b><br><span id="adviserText"></span></div></div>
+              <button id="revealChoicesBtn" class="primary decision-reveal">Show me my options →</button>
+              <div id="decisionArea" class="decision-area hidden"><div class="decision-label">4 • YOUR MOVE</div><p class="decision-hint">No option is free. The cards show who is likely to welcome or resist each choice.</p><div class="choices" id="choices"></div></div>
+            </div>
+          </article>
+
+          <div class="feedback" id="feedback"><div class="feedback-kicker">IMMEDIATE REACTION</div><b id="feedbackTitle">Decision made.</b><div id="feedbackText" class="feedback-copy"></div><div id="groupReactions" class="reaction-grid"></div><div class="effects" id="effects"></div><button id="continueBtn" class="primary">See what happens next →</button></div>
+          <div class="paper" id="paper"><div class="paper-top"><span>THE DAILY HERALD</span><span>WESTMINSTER EDITION</span></div><div class="breaking">POLITICS</div><div class="headline" id="headline"></div><div class="deck" id="deck"></div></div>
+          <div class="vote-card" id="voteCard"><div class="vote-top"><span>HOUSE OF COMMONS</span><span>DIVISION RESULT</span></div><h3 id="voteBill"></h3><div class="votes"><div><div class="muted">Aye</div><div class="vote-num aye" id="ayeNum"></div></div><div class="commons-mark">🏛️</div><div style="text-align:right"><div class="muted">No</div><div class="vote-num no" id="noNum"></div></div></div><div class="passes" id="voteResult"></div></div>
         </div>
-        <aside class="sidecol"><div class="panel country-panel"><div class="panel-label">THE COUNTRY</div><h3>Public approval</h3><div id="regionMeters"></div></div><div class="panel" style="margin-top:12px"><div class="panel-label">YOUR TEAM</div><h3>Cabinet loyalty</h3><div class="cabinet-list" id="cabinetList"></div></div><div class="panel" style="margin-top:12px"><div class="panel-label">YOUR WORD</div><h3>Manifesto promises</h3><div id="manifestoList" class="manifesto-list"></div></div></aside>
+
+        <aside class="sidecol">
+          <div class="panel"><div class="panel-label">GOVERNMENT</div><h3>What you are managing</h3><div class="government-facts"><div><span>Commons majority</span><b id="majorityVal">24</b></div><div><span>Treasury room</span><b id="treasurySide">55</b></div><div><span>Decisions made</span><b id="decisionCount">0</b></div></div></div>
+          <div class="panel" style="margin-top:12px"><div class="panel-label">YOUR PROMISES</div><h3>Manifesto</h3><div id="manifestoList" class="manifesto-list"></div></div>
+          <div class="panel" style="margin-top:12px"><div class="panel-label">WHY THIS MATTERS</div><h3>Governing lesson</h3><p id="lessonSummary" class="side-lesson">Policy is not the same thing as an outcome. Watch what Parliament, institutions and delivery systems do after you decide.</p></div>
+          <div class="hidden"><div id="regionMeters"></div><div id="cabinetList"></div></div>
+        </aside>
       </div>
     </section>
 
-    <section id="endScreen" class="screen verdict-screen"><div class="result-card end"><div class="result-ribbon">THE VERDICT</div><div class="result-crest">🏛️</div><div class="eyebrow dark">YOUR PREMIERSHIP</div><h2 id="endTitle">You survived the term.</h2><div class="grade-wrap"><span>OVERALL GRADE</span><div class="grade" id="grade">B+</div></div><p id="endSummary" class="end-summary"></p><div class="score-grid" id="scoreGrid"></div><div class="end-actions"><button id="shareBtn" class="primary">Share your premiership</button><button id="restartBtn" class="ghost-button dark-ghost">Play again</button></div></div><p class="disclaimer">A fictional political strategy game. Not affiliated with the UK Government or Parliament.</p></section>
+    <section id="endScreen" class="screen verdict-screen"><div class="result-card end"><div class="result-ribbon">ELECTION NIGHT</div><div class="result-crest">🏛️</div><div class="muted">YOUR PREMIERSHIP</div><h2 id="endTitle"></h2><div class="grade-wrap"><span>GOVERNMENT GRADE</span><div class="grade" id="grade"></div></div><p id="endSummary" class="end-summary"></p><div class="score-grid" id="scoreGrid"></div><div class="end-actions"><button id="shareBtn" class="primary">Share my result</button><button id="restartBtn" class="ghost-button dark-ghost">Play again</button></div></div></section>
   </main>
 
-  <div class="bottomnav hidden" id="bottomNav"><div class="inner"><button class="navbtn active" data-nav="no10"><span>🚪</span>No.10</button><button class="navbtn" data-nav="parliament"><span>🏛️</span>Parliament</button><button class="navbtn" data-nav="nation"><span>🗺️</span>Nation</button><button class="navbtn" data-nav="cabinet"><span>👥</span>Cabinet</button><button class="navbtn" data-nav="events"><span>🗓️</span>History</button></div></div>
+  <div class="modal hidden" id="howModal"><div class="modal-backdrop" id="modalBackdrop"></div><div class="modal-card"><button id="closeHowBtn" class="modal-close">×</button><div class="section-kicker">HOW IT WORKS</div><h2>Learn government by trying to run it.</h2><div class="how-steps"><div><b>1</b><span><strong>Read the briefing</strong><small>Understand the institution, constraint and incentives first.</small></span></div><div><b>2</b><span><strong>Make the call</strong><small>Choose between competing groups and trade-offs.</small></span></div><div><b>3</b><span><strong>Watch the system react</strong><small>Parliament, voters, markets and public services respond.</small></span></div><div><b>4</b><span><strong>Live with it</strong><small>Some consequences return months or years later.</small></span></div></div><button id="modalPlayBtn" class="primary">Take office →</button></div></div>
+  <div class="modal hidden" id="statsModal"><div class="modal-backdrop" id="statsBackdrop"></div><div class="modal-card"><button id="closeStatsBtn" class="modal-close">×</button><div class="section-kicker">YOUR DASHBOARD</div><h2>What the numbers mean</h2><div class="stat-explain"><p><b>👍 Public</b> How willing voters are to keep you in office.</p><p><b>📈 Economy</b> Growth, jobs, investment and economic resilience.</p><p><b>❤️ Services</b> The condition of public services and everyday state capacity.</p><p><b>🏛 Authority</b> Your ability to get Cabinet, MPs and government machinery behind you.</p></div></div></div>
+  <div class="toast" id="toast"></div>
 
-  <div class="modal hidden" id="howModal" role="dialog" aria-modal="true" aria-labelledby="howTitle"><div class="modal-backdrop" id="modalBackdrop"></div><div class="modal-card"><button class="modal-close" id="closeHowBtn" aria-label="Close">×</button><div class="section-kicker">HOW TO PLAY</div><h2 id="howTitle">Running Britain, in three rules.</h2><div class="how-grid"><div class="how-item"><span>1</span><div><b>Make the call</b><p>Every briefing gives you imperfect options. Pick one.</p></div></div><div class="how-item"><span>2</span><div><b>Live with it</b><p>Choices move the economy, public services, your popularity and your power.</p></div></div><div class="how-item"><span>3</span><div><b>Expect consequences</b><p>Some decisions come back months later, and Parliament can still say no.</p></div></div></div><div class="lesson-callout"><b>No prior political knowledge needed.</b> The game explains institutions when they actually matter.</div><button id="modalPlayBtn" class="primary">I’m ready. Take office →</button></div></div>
-  <div class="toast" id="toast" aria-live="polite"></div>
-
-<script src="events.js"></script><script src="events-1.js"></script><script src="events-2.js"></script><script src="events-3.js"></script><script src="events-4.js"></script><script src="events-5.js"></script><script src="app.js"></script><script src="shell.js"></script>
+<script src="events.js"></script><script src="events-1.js"></script><script src="events-2.js"></script><script src="events-3.js"></script><script src="events-4.js"></script><script src="events-5.js"></script><script src="education.js"></script><script src="app.js"></script><script src="shell.js"></script>
 </body>
 </html>
