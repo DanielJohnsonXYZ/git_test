@@ -1,63 +1,29 @@
-# Your Move, Prime Minister
+# Review My MP
 
-A playable simulation of running the UK government. Five years, twenty quarters,
-and a decision on your desk every one of them.
+Production-track MVP for a UK civic platform that records structured constituent experiences with MPs.
 
-**Play:** https://danieljohnsonxyz.github.io/your-move-prime-minister/
+## Product principle
 
-## The loop
+Measure constituency service, not political popularity. The core questions are whether an MP's office responded, how quickly, whether the reply addressed the question, whether action was taken, and whether the issue progressed.
 
-Each quarter runs the same three beats:
+## Current build
 
-1. **Briefing** — two or three things want an answer. One is urgent. Your three
-   manifesto promises sit underneath, marked on track, at risk or off track.
-2. **Decide** — an issue opens as one card: what happened, what your Chancellor
-   thinks, what a second adviser thinks (they often disagree), and three or four
-   responses with their likely consequences shown as ranges rather than
-   certainties. Every decision costs action points, and you only get three.
-3. **Consequences** — running the quarter always interrupts with a report: what
-   moved, which earlier decisions have started to land, what got worse because
-   you left it, and what the papers made of it.
+- Live postcode → MP lookup using the official UK Parliament Members API
+- Responsive MP profile experience
+- Clearly labelled sample service metrics and reviews
+- Structured two-minute review flow
+- No political star rating
+- Production-friendly Next.js structure ready for Vercel
 
-Most policy takes a year or more to reach people, so the decision that wins or
-loses the election is usually one you made long before it.
+## Run locally
 
-## Running it
+1. Install Node.js 20+
+2. `npm install`
+3. `npm run dev`
+4. Open http://localhost:3000
 
-No build step, no dependencies.
+## Next production milestone
 
-```
-# open directly
-open index.html
+Add Supabase authentication and database storage. Reviews should require a verified account, default to `pending`, and only become public after moderation. Add reporting, MP right-of-reply, rate limiting, privacy/terms/moderation pages and a legal review before public launch.
 
-# or serve it
-npx http-server .
-```
-
-Publish directory is the repository root; entry file is `index.html`.
-
-## Layout
-
-```
-index.html      the shell: header, nav, one section per screen
-styles.css      one stylesheet
-js/content.js   the event library, briefings and scheduling metadata
-js/engine.js    the simulation — state, turns, votes, promises, saving
-js/ui.js        rendering and interaction
-```
-
-`js/engine.js` holds no DOM references and `js/ui.js` holds no game rules, so
-the model can be tested without a browser:
-
-```js
-Engine.reset();
-Engine.setPromises(['nhs', 'housing', 'growth'], []);
-Engine.beginTerm();
-Engine.decide('nhs_strike', 0);
-Engine.endTurn();   // returns the quarter's report
-```
-
-## Saving
-
-Your term saves to `localStorage` after every decision and every quarter, and
-the title screen offers to continue it. Nothing is uploaded anywhere.
+Review My MP is independent and is not affiliated with UK Parliament or any political party.
